@@ -10,82 +10,81 @@ public class Renderer
     private readonly IShader shader;
     private readonly IGLWrapper glWrapper;
     
-    private IndexBuffer IndexBuffer { get; }
-    private  VertexBuffer VertexBuffer { get; }
-    private  VertexArray VertexArray { get; }
-    private  uint[] Indices { get; }
-    private  Vertex[] Vertices { get; }
-    
-
-    private readonly List<RenderObjectInfo> renderingQueue = new();
+    private readonly List<RenderCommand> renderingQueue = new();
+    private uint sequence;
 
     public Renderer(IShader shader, IGLWrapper glWrapper)
     {
         this.shader = shader;
         this.glWrapper = glWrapper;
-        
-        Vertices = new[]
-        {
-            new Vertex(new Vector3(1, 1, 0.0f), new Vector2(1.0f, 1.0f), Color4.White),
-            new Vertex(new Vector3(1, 0, 0.0f), new Vector2(1.0f, 0.0f), Color4.White),
-            new Vertex(new Vector3(0, 0, 0.0f), new Vector2(0.0f, 0.0f), Color4.White),
-            new Vertex(new Vector3(0, 1, 0.0f), new Vector2(0.0f, 1.0f), Color4.White)
-        };
-        Indices = new uint[]
-        {
-            0, 1, 3, 1, 2, 3
-        };
-        
-        VertexBuffer = new VertexBuffer(glWrapper);
-        VertexBuffer.BufferData(Vertices);
-        VertexArray = new VertexArray(glWrapper);
-        IndexBuffer = new IndexBuffer(glWrapper, Indices);
-        
-        VertexArray.Bind();
-        IndexBuffer.Bind();
-        VertexBuffer.Bind();
+
+        sequence = 0;
     }
 
-    public void RenderObject(Texture texture, Matrix4 transform)
+    public void RenderObject(GameObject gameObject, float? depth = null)
     {
-        renderingQueue.Add(new RenderObjectInfo
+        if (gameObject.Shape is null || gameObject.Texture is null)
         {
-            Texture = texture,
-            Transform = transform
-        });
+            return;
+        }
+        
+        var transformMatrix = gameObject.Transform.GetTransformationMatrix();
+
+        renderingQueue.Add(new RenderCommand(
+            gameObject.Shape,
+            gameObject.Texture,
+            transformMatrix,
+            depth ?? transformMatrix.M43,
+            sequence++));
     }
 
     public void Render()
     {
-        GL.Clear(ClearBufferMask.ColorBufferBit);
-        GL.ClearColor(Renderer.BackgroundColor);
+        glWrapper.Clear(ClearBufferMask.ColorBufferBit);
+        glWrapper.ClearColor(BackgroundColor);
         
         shader.Use();
         shader.SetMatrix4("view", Camera.Instance.ToViewMatrix());
 
-        foreach (var obj in renderingQueue)
+        foreach (var renderCommand in renderingQueue)
         {
-            shader.SetMatrix4("transform", obj.Transform);
+            shader.SetMatrix4("transform", renderCommand.Transform);
             
-            obj.Texture.Use();
+            renderCommand.Texture.Use();
+            renderCommand.Shape.Bind();
             
-            GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
+            glWrapper.DrawElements(PrimitiveType.Triangles, renderCommand.Shape.IndexBufferLength, DrawElementsType.UnsignedInt, 0);
+            
+            renderCommand.Shape.Unbind();
             
 #if DEBUG
-            var error = GL.GetError();
+            var error = glWrapper.GetError();
             if (error != ErrorCode.NoError)
             {
                 System.Diagnostics.Debug.WriteLine($"OpenGL error occurred: {error}");
             }
 #endif
         }
-        
+
         renderingQueue.Clear();
+        sequence = 0;
     }
     
-    private struct RenderObjectInfo
+    private sealed class RenderCommand
     {
-        internal Texture Texture { get; init; }
-        internal Matrix4 Transform { get; init; }
+        public RenderCommand(Shape shape, Texture texture, Matrix4 transform, float depth, uint sequence)
+        {
+            Shape = shape;
+            Texture = texture;
+            Transform = transform;
+            Depth = depth;
+            Sequence = sequence;
+        }
+
+        public Shape Shape { get; set; }
+        public Texture Texture { get; init; }
+        public Matrix4 Transform { get; init; }
+        public float Depth { get; init; }
+        public uint Sequence { get; init; }
     }
 }
