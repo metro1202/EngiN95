@@ -4,7 +4,7 @@ using NSubstitute;
 using NSubstitute.ReceivedExtensions;
 using OpenTK.Graphics.OpenGL4;
 
-namespace EngineTests.Rendering;
+namespace EngiN95.Core.UnitTests.Rendering;
 
 public class DynamicVertexBufferTests
 {

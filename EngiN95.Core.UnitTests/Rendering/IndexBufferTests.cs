@@ -4,7 +4,7 @@ using NSubstitute;
 using OpenTK.Graphics.OpenGL4;
 using Buffer = System.Buffer;
 
-namespace EngineTests.Rendering;
+namespace EngiN95.Core.UnitTests.Rendering;
 
 public class IndexBufferTests
 {

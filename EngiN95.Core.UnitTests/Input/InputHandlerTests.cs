@@ -4,7 +4,7 @@ using NSubstitute;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace EngineTests.Input;
+namespace EngiN95.Core.UnitTests.Input;
 
 public class InputHandlerTests
 {

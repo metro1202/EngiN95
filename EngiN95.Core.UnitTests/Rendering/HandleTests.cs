@@ -1,7 +1,7 @@
 ﻿using EngiN95.Core.Rendering;
 using FluentAssertions;
 
-namespace EngineTests.Rendering;
+namespace EngiN95.Core.UnitTests.Rendering;
 
 public class HandleTests
 {

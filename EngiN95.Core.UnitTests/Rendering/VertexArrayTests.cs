@@ -3,7 +3,7 @@ using FluentAssertions;
 using NSubstitute;
 using OpenTK.Graphics.OpenGL4;
 
-namespace EngineTests.Rendering;
+namespace EngiN95.Core.UnitTests.Rendering;
 
 public class VertexArrayTests
 {

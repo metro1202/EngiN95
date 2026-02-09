@@ -2,7 +2,7 @@ using EngiN95.Core.Extensions;
 using FluentAssertions;
 using OpenTK.Mathematics;
 
-namespace EngineTests.Extensions.VectorExtensions;
+namespace EngiN95.Core.UnitTests.Extensions.VectorExtensions;
 
 public class Vector2ExtensionTests
 {

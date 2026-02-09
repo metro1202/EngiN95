@@ -4,15 +4,15 @@ namespace EngiN95.Core.Management;
 
 public sealed class ResourceManager
 {
+    public static ResourceManager Instance { get; } = new();
     private readonly IGLWrapper glWrapper;
-
-    public ResourceManager(IGLWrapper glWrapper)
+    private ResourceManager()
     {
-        this.glWrapper = glWrapper;
+        glWrapper = new GLWrapper();
     }
     
     private readonly Dictionary<string, Texture> textureCache = new();
-
+    
     public Texture GetTexture(string textureName)
     {
         textureCache.TryGetValue(textureName, out var texture);

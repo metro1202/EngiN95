@@ -36,10 +36,9 @@ internal class GameImpl : Game
         IGLWrapper glWrapper = new GLWrapper();
 
         renderer = new Renderer(shader, glWrapper);
-
         Renderer.BackgroundColor = Color4.Black;
-
-        var rm = new ResourceManager(glWrapper);
+        
+        var rm = ResourceManager.Instance;
         
         texture = rm.GetTexture("Resources/Sprites/travisfish.png");
         texture.Use();
