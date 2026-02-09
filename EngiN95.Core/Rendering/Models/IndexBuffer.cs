@@ -35,7 +35,11 @@ public class IndexBuffer : IIndexBuffer
 
     public void Dispose()
     {
-        if (disposed) return;
+        if (disposed)
+        {
+            return;
+        }
+        
         disposed = true;
         glWrapper.DeleteBuffer(Handle);
         GC.SuppressFinalize(this);

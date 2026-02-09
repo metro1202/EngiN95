@@ -25,6 +25,5 @@ public sealed class Camera
     
     //not mark type as beforefieldinit
     static Camera() {}
-    //no other instance can be created
     private Camera() {}
 }

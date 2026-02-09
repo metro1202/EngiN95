@@ -14,7 +14,10 @@ public class Image
         var image = SixLabors.ImageSharp.Image.Load<Rgba32>(path);
 
         //flip img
-        if (flip) image.Mutate(x => x.Flip(FlipMode.Vertical));
+        if (flip)
+        {
+            image.Mutate(x => x.Flip(FlipMode.Vertical));
+        }
 
         var pixels = new List<byte>(4 * image.Width * image.Height);
 

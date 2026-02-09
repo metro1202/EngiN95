@@ -2,8 +2,8 @@
 
 public class ShaderProgramSource
 {
-    public string VertexShaderSource;
-    public string FragmentShaderSource;
+    public readonly string VertexShaderSource;
+    public readonly string FragmentShaderSource;
 
     public ShaderProgramSource(string vertexShaderSource, string fragmentShaderSource)
     {

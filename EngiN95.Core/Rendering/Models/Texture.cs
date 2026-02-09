@@ -82,7 +82,11 @@ public class Texture : IDisposable
     
     public void Dispose()
     {
-        if (disposed) return;
+        if (disposed)
+        {
+            return;
+        }
+        
         disposed = true;
         glWrapper.DeleteTexture(Handle);
         GC.SuppressFinalize(this);
