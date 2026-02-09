@@ -5,7 +5,7 @@ namespace EngiN95.Core.Rendering;
 
 public class Texture : IDisposable
 {
-    public Handle Handle { get; }
+    private Handle Handle { get; }
     public int Width { get; }
     public int Height { get; }
     
@@ -42,17 +42,15 @@ public class Texture : IDisposable
         texture.Mutate(x => x.Flip(FlipMode.Vertical)); 
         
         var pixelData = new byte[4 * texture.Width * texture.Height];
-        Span<byte> span = stackalloc byte[4 * texture.Width * texture.Height];
-        texture.CopyPixelDataTo(span);
-        MemoryMarshal.AsBytes(span).CopyTo(pixelData);
+        texture.CopyPixelDataTo(pixelData);
         
         var pinnedArray = GCHandle.Alloc(pixelData, GCHandleType.Pinned);
         try
         {
             IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, texture.Width, texture.Height, 0,
-                OpenTK.Graphics.OpenGL4.PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
+            glWrapper.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, texture.Width, texture.Height, 0,
+                PixelFormat.Rgba, PixelType.UnsignedByte, pointer);
             
             glWrapper.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
                 (int) TextureMinFilter.Nearest);
