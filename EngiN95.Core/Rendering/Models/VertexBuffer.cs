@@ -24,7 +24,10 @@ public class VertexBuffer : IVertexBuffer
 
     public void BufferData(Vertex[] data)
     {
-        if (data.Length == 0) return;
+        if (data.Length == 0)
+        {
+            return;
+        }
 
         Elements = data.Length;
         Bind();
@@ -48,7 +51,11 @@ public class VertexBuffer : IVertexBuffer
 
     public void Dispose()
     {
-        if (disposed) return;
+        if (disposed)
+        {
+            return;
+        }
+
         disposed = true;
         glWrapper.DeleteBuffer(Handle);
         GC.SuppressFinalize(this);

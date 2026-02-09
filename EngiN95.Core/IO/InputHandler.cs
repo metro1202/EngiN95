@@ -80,10 +80,10 @@ public sealed class InputHandler : IInputHandler
         get
         {
             var movementDirection = Vector2.Zero;
-            if (IsKeyDown(Keys.W)) movementDirection.Y += 1;
-            if (IsKeyDown(Keys.S)) movementDirection.Y -= 1;
-            if (IsKeyDown(Keys.A)) movementDirection.X -= 1;
-            if (IsKeyDown(Keys.D)) movementDirection.X += 1;
+
+            movementDirection.Y = (IsKeyDown(Keys.W) ? 1 : 0) + (IsKeyDown(Keys.S) ? -1 : 0);
+            movementDirection.X = (IsKeyDown(Keys.D) ? 1 : 0) + (IsKeyDown(Keys.A) ? -1 : 0);
+
             return movementDirection;
         }
     }

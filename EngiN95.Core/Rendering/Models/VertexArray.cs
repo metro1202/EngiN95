@@ -45,7 +45,11 @@ public class VertexArray : IVertexArray
     
     public void Dispose()
     {
-        if (disposed) return;
+        if (disposed)
+        {
+            return;
+        }
+
         disposed = true;
         glWrapper.DeleteVertexArray(Handle);
         GC.SuppressFinalize(this);

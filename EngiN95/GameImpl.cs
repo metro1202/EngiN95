@@ -10,29 +10,18 @@ namespace EngiN95;
 
 internal class GameImpl : Game
 {
-    public GameImpl(string windowTitle, int initialWindowWidth, int initialWindowHeight) : base(windowTitle, initialWindowWidth, initialWindowHeight)
+    public GameImpl(string windowTitle, int initialWindowWidth, int initialWindowHeight) 
+        : base(windowTitle, initialWindowWidth, initialWindowHeight)
     {
-        vertices = new[]
-        {
-            new Vertex(new Vector3(600, 600, 0.0f), new Vector2(1.0f, 1.0f), Color4.White),
-            new Vertex(new Vector3(600, 0, 0.0f), new Vector2(1.0f, 0.0f), Color4.White),
-            new Vertex(new Vector3(0, 0, 0.0f), new Vector2(0.0f, 0.0f), Color4.White),
-            new Vertex(new Vector3(0, 600, 0.0f), new Vector2(0.0f, 1.0f), Color4.White)
-        };
         
-        indices = new uint[]
-        {
-            0, 1, 3, 1, 2, 3
-        };
     }
 
-    private IShader shader;
+    private Renderer renderer;
     private Texture texture;
-    private IndexBuffer indexBuffer;
-    private VertexBuffer vertexBuffer;
-    private VertexArray vertexArray;
-    private readonly uint[] indices;
-    private readonly Vertex[] vertices;
+    
+    private GameObject gameObject;
+    private GameObject gameObject2;
+    private GameObject gameObject3;
 
     protected override void Init()
     {
@@ -42,14 +31,12 @@ internal class GameImpl : Game
     protected override void OnLoad()
     {
         var src = ShaderProgramSource.LoadFromFiles("Resources/Shaders/vertex.glsl", "Resources/Shaders/fragment.glsl");
-        shader = new Shader(src);
+        var shader = new Shader(src);
 
         IGLWrapper glWrapper = new GLWrapper();
-        
-        vertexBuffer = new VertexBuffer(glWrapper);
-        vertexBuffer.BufferData(vertices);
-        vertexArray = new VertexArray(glWrapper);
-        indexBuffer = new IndexBuffer(glWrapper, indices);
+
+        renderer = new Renderer(shader, glWrapper);
+        Renderer.BackgroundColor = Color4.Black;
         
         var rm = ResourceManager.Instance;
         
@@ -61,6 +48,54 @@ internal class GameImpl : Game
 
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        
+        InitTestObjects();
+    }
+
+    private void InitTestObjects()
+    {
+        Matrix4.CreateScale(200f, out var scale);
+        Matrix4.CreateRotationZ(0, out var rotation);
+        Matrix4.CreateTranslation(400, 0, 0, out var translation);
+        Matrix4.CreateTranslation(300, 0, 0, out var translation1);
+        Matrix4.CreateTranslation(200, 0, 0, out var translation2);
+        
+        var transform = Matrix4.Identity;
+        transform *= scale;
+        transform *= rotation;
+        transform *= translation;
+        
+        var transform1 = Matrix4.Identity;
+        transform1 *= scale;
+        transform1 *= rotation;
+        transform1 *= translation1;
+        
+        var transform2 = Matrix4.Identity;
+        transform2 *= scale;
+        transform2 *= rotation;
+        transform2 *= translation2;
+
+        gameObject = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform.ExtractTranslation(), transform.ExtractRotation(),
+                transform.ExtractScale()),
+            Texture = texture,
+        };
+        gameObject2 = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform1.ExtractTranslation(), transform1.ExtractRotation(),
+                transform1.ExtractScale()),
+            Texture = texture,
+        };
+        gameObject3 = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform2.ExtractTranslation(), transform2.ExtractRotation(),
+                transform2.ExtractScale()),
+            Texture = texture,
+        };
     }
 
     protected override void OnUpdate()
@@ -69,35 +104,32 @@ internal class GameImpl : Game
         const float speed = 800f; // pixel/s
         //Console.WriteLine(movementDirection);
         Camera.Instance.Move(movementDirection * speed * Time.DeltaTime);
+
+        lastFrameTime += Time.DeltaTimeSpan;
+        if (lastFrameTime > TimeSpan.FromSeconds(1))
+        {
+            lastFrameTime -=  TimeSpan.FromSeconds(1);
+            Console.WriteLine(frameCounter);
+            frameCounter = 0;
+        }
     }
 
+    private int frameCounter = 0;
+    private TimeSpan lastFrameTime = TimeSpan.Zero;
+    
     protected override void OnRender()
     {
-        GL.Clear(ClearBufferMask.ColorBufferBit);
-        GL.ClearColor(Color4.CornflowerBlue);
-        
-        shader.Use();
-        
-        vertexBuffer.BufferData(vertices);
-
-        vertexArray.Bind();
-        indexBuffer.Bind();
-        vertexBuffer.Bind();
-        
-            
-        Matrix4.CreateScale(0.5f, out var scale);
         Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(180f * Time.TotalGameTime), out var rotation);
-        Matrix4.CreateTranslation(400, 0, 0, out var translation);
+
+        gameObject.Transform.Rotation = rotation.ExtractRotation();
+        gameObject2.Transform.Rotation = rotation.ExtractRotation();
+        gameObject3.Transform.Rotation = rotation.ExtractRotation();
+
+        renderer.RenderObject(gameObject, 2.0f);
+        renderer.RenderObject(gameObject2, 1.0f);
+        renderer.RenderObject(gameObject3, 3.0f);
+        renderer.Render();
         
-        var transform = Matrix4.Identity;
-        transform *= scale;
-        transform *= rotation;
-        transform *= translation;
-
-        shader.SetMatrix4("transform", transform);
-
-        shader.SetMatrix4("view", Camera.Instance.ToViewMatrix());
-
-        GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+        frameCounter++;
     }
 }

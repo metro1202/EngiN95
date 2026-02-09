@@ -1,26 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=CodeStyle/@EntryIndexedValue">On</s:String>
-	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
-	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
-	
-	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
-  &lt;Assembly Path="C:\Users\happy\.dotnet\packs\NETStandard.Library.Ref\2.1.0\ref\netstandard2.1\netstandard.dll" /&gt;&#xD;
-  &lt;Assembly Path="C:\Users\happy\.dotnet\packs\Microsoft.NETCore.App.Ref\6.0.5\ref\net6.0\System.ComponentModel.TypeConverter.dll" /&gt;&#xD;
-  &lt;Assembly Path="C:\Users\happy\.dotnet\packs\Microsoft.NETCore.App.Ref\6.0.5\ref\net6.0\System.Drawing.Primitives.dll" /&gt;&#xD;
-  &lt;Assembly Path="C:\Users\happy\.nuget\packages\system.drawing.common\7.0.0\lib\net7.0\System.Drawing.Common.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_002EUnitTests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002EIO_002EKeyboardInputHandler_003B_002A/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002EIO_002EMouseInputHandler_003B_002A/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002ERendering_002EGLWrapper_003B_002A/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002ERendering_002EIndexBuffer_003BFinalize/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002ERendering_002EVertexArray_003BFinalize/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=EngineSigma_002ECore_003B_002A_003BEngineSigma_002ECore_002ERendering_002EVertexBuffer_003BFinalize/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/Environment/Highlighting/HighlightingEnabled/@EntryValue">False</s:Boolean>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingMode/@EntryValue">OnlyFullLine</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=54a043ca_002Da8ad_002D4759_002Db42d_002D0a622afbed34/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="IndexBufferCtorTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;ProjectFolder&gt;88E27649-D258-4E4A-B118-F3D8FEA34583/d:Rendering&lt;/ProjectFolder&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b3301b68_002D4518_002D46a9_002Db099_002Dee077c40f726/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=89cf43fa_002D1f1a_002D4975_002Daa94_002Df346a78206d9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;tests&amp;gt;\&amp;lt;EngiN95.Core.UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\happy\Documents\Projects\EngiN95\EngiN95.Core.UnitTests" Presentation="&amp;lt;tests&amp;gt;\&amp;lt;EngiN95.Core.UnitTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

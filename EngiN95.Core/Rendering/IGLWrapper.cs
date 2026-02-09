@@ -6,6 +6,7 @@ namespace EngiN95.Core.Rendering;
 
 public interface IGLWrapper
 {
+    //Buffer
     int GenBuffer();
     void BindBuffer(BufferTarget target, int buffer);
     void BufferData(BufferTarget target, int size, IntPtr data, BufferUsageHint usage);
@@ -13,12 +14,14 @@ public interface IGLWrapper
     void BufferSubData<T>(BufferTarget target, IntPtr offset, int size, [In, Out] T[] data) where T : struct;
     void DeleteBuffer(int buffer);
 
+    //VA
     int GenVertexArray();
     void BindVertexArray(int array);
     void VertexAttribPointer(int index, int size, VertexAttribPointerType type, bool normalized, int stride, int offset);
     void EnableVertexAttribArray(int index);
     void DeleteVertexArray(int array);
     
+    //Shader
     int CreateShader(ShaderType type);
     void ShaderSource(int shader, string source);
     void CompileShader(int shader);
@@ -27,12 +30,14 @@ public interface IGLWrapper
     void DetachShader(int program, int shader);
     void DeleteShader(int shader);
 
+    //Program
     int CreateProgram();
     void AttachShader(int program, int shader);
     void LinkProgram(int program);
     void GetProgram(int program, GetProgramParameterName pname, out int @params);
     void UseProgram(int program);
     
+    //Uniforms
     string GetActiveUniform(int program, int uniformIndex, out int size, out ActiveUniformType type);
     int GetUniformLocation(int program, string name);
     void Uniform1(int location, float value);
@@ -45,6 +50,7 @@ public interface IGLWrapper
     void UniformMatrix3(int location, bool transpose, ref Matrix3 matrix);
     void UniformMatrix4(int location, bool transpose, ref Matrix4 matrix);
 
+    //Texture
     int GenTexture();
     void ActiveTexture(TextureUnit texture);
     void BindTexture(TextureTarget target, int texture);
@@ -52,4 +58,10 @@ public interface IGLWrapper
     void TexParameter(TextureTarget target, TextureParameterName pname, int param);
     void GenerateMipmap(GenerateMipmapTarget target);
     void DeleteTexture(int handle);
+
+    //Render
+    void Clear(ClearBufferMask mask);
+    void ClearColor(Color4 color);
+    void DrawElements(PrimitiveType mode, int count, DrawElementsType type, int indices);
+    ErrorCode GetError();
 }

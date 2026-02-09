@@ -92,6 +92,8 @@ public class GLWrapper : IGLWrapper
     public void UniformMatrix4(int location, bool transpose, ref Matrix4 matrix) =>
         GL.UniformMatrix4(location, transpose, ref matrix);
 
+    
+    //Texture
     public int GenTexture() => GL.GenTexture();
 
     public void ActiveTexture(TextureUnit texture) => GL.ActiveTexture(texture);
@@ -108,4 +110,11 @@ public class GLWrapper : IGLWrapper
     public void GenerateMipmap(GenerateMipmapTarget target) => GL.GenerateMipmap(target);
 
     public void DeleteTexture(int handle) => GL.DeleteTexture(handle);
+    
+    
+    //Render
+    public void Clear(ClearBufferMask mask) =>  GL.Clear(mask);
+    public void ClearColor(Color4 color) => GL.ClearColor(color);
+    public void DrawElements(PrimitiveType mode, int count, DrawElementsType type, int indices) =>  GL.DrawElements(mode, count, type, indices);
+    public ErrorCode GetError() => GL.GetError();
 }
