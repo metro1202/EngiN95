@@ -18,6 +18,10 @@ internal class GameImpl : Game
 
     private Renderer renderer;
     private Texture texture;
+    
+    private GameObject gameObject;
+    private GameObject gameObject2;
+    private GameObject gameObject3;
 
     protected override void Init()
     {
@@ -33,6 +37,8 @@ internal class GameImpl : Game
 
         renderer = new Renderer(shader, glWrapper);
 
+        Renderer.BackgroundColor = Color4.Black;
+
         var rm = new ResourceManager(glWrapper);
         
         texture = rm.GetTexture("Resources/Sprites/travisfish.png");
@@ -43,20 +49,14 @@ internal class GameImpl : Game
 
         GL.Enable(EnableCap.Blend);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        
+        InitTestObjects();
     }
 
-    protected override void OnUpdate()
-    {
-        var movementDirection = InputHandler.MovementDirection;
-        const float speed = 800f; // pixel/s
-        //Console.WriteLine(movementDirection);
-        Camera.Instance.Move(movementDirection * speed * Time.DeltaTime);
-    }
-
-    protected override void OnRender()
+    private void InitTestObjects()
     {
         Matrix4.CreateScale(200f, out var scale);
-        Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(180f * Time.TotalGameTime), out var rotation);
+        Matrix4.CreateRotationZ(0, out var rotation);
         Matrix4.CreateTranslation(400, 0, 0, out var translation);
         Matrix4.CreateTranslation(300, 0, 0, out var translation1);
         Matrix4.CreateTranslation(200, 0, 0, out var translation2);
@@ -75,10 +75,62 @@ internal class GameImpl : Game
         transform2 *= scale;
         transform2 *= rotation;
         transform2 *= translation2;
-        
-        renderer.RenderObject(texture, transform);
-        renderer.RenderObject(texture, transform1);
-        renderer.RenderObject(texture, transform2);
+
+        gameObject = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform.ExtractTranslation(), transform.ExtractRotation(),
+                transform.ExtractScale()),
+            Texture = texture,
+        };
+        gameObject2 = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform1.ExtractTranslation(), transform1.ExtractRotation(),
+                transform1.ExtractScale()),
+            Texture = texture,
+        };
+        gameObject3 = new GameObject
+        {
+            Shape = new RectShape(new GLWrapper()),
+            Transform = new Transform(transform2.ExtractTranslation(), transform2.ExtractRotation(),
+                transform2.ExtractScale()),
+            Texture = texture,
+        };
+    }
+
+    protected override void OnUpdate()
+    {
+        var movementDirection = InputHandler.MovementDirection;
+        const float speed = 800f; // pixel/s
+        //Console.WriteLine(movementDirection);
+        Camera.Instance.Move(movementDirection * speed * Time.DeltaTime);
+
+        lastFrameTime += Time.DeltaTimeSpan;
+        if (lastFrameTime > TimeSpan.FromSeconds(1))
+        {
+            lastFrameTime -=  TimeSpan.FromSeconds(1);
+            Console.WriteLine(frameCounter);
+            frameCounter = 0;
+        }
+    }
+
+    private int frameCounter = 0;
+    private TimeSpan lastFrameTime = TimeSpan.Zero;
+    
+    protected override void OnRender()
+    {
+        Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(180f * Time.TotalGameTime), out var rotation);
+
+        gameObject.Transform.Rotation = rotation.ExtractRotation();
+        gameObject2.Transform.Rotation = rotation.ExtractRotation();
+        gameObject3.Transform.Rotation = rotation.ExtractRotation();
+
+        renderer.RenderObject(gameObject, 2.0f);
+        renderer.RenderObject(gameObject2, 1.0f);
+        renderer.RenderObject(gameObject3, 3.0f);
         renderer.Render();
+        
+        frameCounter++;
     }
 }
